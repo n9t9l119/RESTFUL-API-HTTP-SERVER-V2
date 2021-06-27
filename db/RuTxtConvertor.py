@@ -1,14 +1,9 @@
-from typing import List, Union
+from typing import List, Dict, Union
 
-from db.model import GeoInfo, NameId
+from db.model import GeoInfo
 
 
 class RuTxtConvertor:
-    def make_cells(self, string: str) -> List[str]:
-        cells = string.split('\t')
-        cells[-1] = cells[-1].replace("\n", "")
-        return cells
-
     def convert_str_to_info(self, cells: List[str]):
         info_string = dict(
             geonameid=cells[0],
@@ -32,14 +27,19 @@ class RuTxtConvertor:
             modification_date=cells[18])
         return info_string
 
-    def convert_str_to_nameid(self, cells: List[str], item: GeoInfo) -> List[NameId]:
+    def make_cells(self, string: str) -> List[str]:
+        cells = string.split('\t')
+        cells[-1] = cells[-1].replace("\n", "")
+        return cells
+
+    def convert_str_to_nameid(self, cells: List[str], item: GeoInfo) -> List[Dict[str, Union[str, GeoInfo]]]:
         all_str_names_to_db = []
-        names = self.all_names_in_str(cells)
+        names = self.__all_names_in_str(cells)
         for name in names:
-            all_str_names_to_db.append(NameId(name=name, idlnk=item))
+            all_str_names_to_db.append(dict(name=name, idlnk=item))
         return all_str_names_to_db
 
-    def all_names_in_str(self, cells: List[str]) -> List[str]:
+    def __all_names_in_str(self, cells: List[str]) -> List[str]:
         names = [cells[1]]
         if names[0] != cells[2]:
             names.append(cells[2])
@@ -49,7 +49,3 @@ class RuTxtConvertor:
                 if alternatename not in names and alternatename != '':
                     names.append(alternatename)
         return names
-
-
-
-

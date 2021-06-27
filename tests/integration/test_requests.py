@@ -2,7 +2,9 @@ import requests
 
 
 def test_getinfo():
-    response = requests.post('http://127.0.0.1:8000/api/getinfo', data='451750')
+    response = requests.post('http://127.0.0.1:8000/api/getinfo',json={
+        "Geo_id": 451750
+    })
 
     assert response.text == ('{"geonameid":451750,"name":"Zhitovo","asciiname":"Zhitovo","alternatenames":"",'
                              '"latitude":"57.29693","longitude":"34.41848","feature class":"P","feature_code":"PPL",'
@@ -29,6 +31,8 @@ def test_getcomparison():
 
 
 def test_hintname():
-    response = requests.post('http://127.0.0.1:8000/api/hintname', data='Yasnaya')
+    response = requests.post('http://127.0.0.1:8000/api/hintname', json={
+        "Hint": 'Yasnaya'
+    })
 
     print(response.text)

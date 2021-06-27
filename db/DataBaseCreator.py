@@ -5,6 +5,8 @@ from config import db_path, ru_txt_path, timezones_txt_path, db
 from db.TimezonesTxtConverter import TimezonesTxtConverter
 from db.RuTxtConvertor import RuTxtConvertor
 from db.model import GeoInfo, NameId
+from db.serializers.Serializer import Serializer
+
 
 class DataBaseCreator:
     def create_db(self):
@@ -37,10 +39,13 @@ class DataBaseCreator:
         self.add_to_db(table)
 
     def append_str_to_db(self, table: List[Union[GeoInfo, NameId]], cells: List[str]) -> List[Union[NameId, GeoInfo]]:
-        item = RuTxtConvertor().convert_str_to_info(cells)
-        item = GeoInfoSerializer().serialize(item)
-        table.append(item)
-        table.extend(RuTxtConvertor().convert_str_to_nameid(cells, item))
+        geo_item = RuTxtConvertor().convert_str_to_info(cells)
+        geo_item = Serializer().serialize_geo_info(geo_item)
+        table.append(geo_item)
+
+        name_id_items = RuTxtConvertor().convert_str_to_nameid(cells, geo_item)
+        name_id_items = [Serializer().serialize_name_id(item) for item in name_id_items]
+        table.extend(name_id_items)
         return self.block_commit(table)
 
     def block_commit(self, table: List[Union[NameId, GeoInfo]]) -> List[Union[NameId, GeoInfo]]:
