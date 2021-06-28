@@ -52,7 +52,7 @@ class GeoComparisonService:
 
         if ids:
             for id in ids:
-                item = self.info_repository.__get_first_by_geonameid(id)
+                item = self.info_repository._get_first_by_geonameid(id)
                 if item is not None:
                     geo_items.append(item)
 

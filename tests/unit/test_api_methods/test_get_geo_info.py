@@ -3,7 +3,7 @@ import re
 
 from services import GeoInfoService
 from db.model import GeoInfo
-from tests.unit.test_txt_validation import test_ru_txt_validation
+from tests.test_txt_validation import TestDatabaseTxtValidation
 
 
 def test_get_item_by_geonameid(get_item_validation):
@@ -14,8 +14,8 @@ def test_get_item_by_geonameid(get_item_validation):
 
 def match_dict(dct):
     for count, key in enumerate(dct):
-        if test_ru_txt_validation.Patterns.lst[count] != '':
-            assert re.match(test_ru_txt_validation.Patterns.lst[count], str(dct[key]))
+        if TestDatabaseTxtValidation.GeoInfoDataTemplate.lst[count] != '':
+            assert re.match(TestDatabaseTxtValidation.GeoInfoDataTemplate.lst[count], str(dct[key]))
 
 
 @pytest.fixture()
