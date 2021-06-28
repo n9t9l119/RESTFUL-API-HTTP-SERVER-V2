@@ -1,12 +1,12 @@
 from typing import List, Dict, Any
 
 from services.GeoInfoService import GeoInfoService
-from repositories.InfoRepository import InfoRepository
+from repositories.GeoInfoRepository import GeoInfoRepository
 
 
 class GeoInfoPageService:
     def __init__(self):
-        self.__info_repository = InfoRepository()
+        self.__info_repository = GeoInfoRepository()
         self.geo_info_service = GeoInfoService()
 
     def get_page(self, page_number: int, items_value: int) -> List[Dict[str, Any]]:

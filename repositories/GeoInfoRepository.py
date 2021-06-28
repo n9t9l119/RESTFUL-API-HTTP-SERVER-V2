@@ -1,7 +1,7 @@
 from db.model import GeoInfo
 
 
-class InfoRepository:
+class GeoInfoRepository:
 
     def get_by_id(self, id):
         return GeoInfo.query.get(id)

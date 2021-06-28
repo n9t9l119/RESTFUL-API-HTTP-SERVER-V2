@@ -2,7 +2,7 @@ from transliterate import translit
 from typing import Union, Dict, Any, List
 
 from db.model import GeoInfo, Timezones
-from repositories.InfoRepository import InfoRepository
+from repositories.GeoInfoRepository import GeoInfoRepository
 from repositories.NameIdRepository import NameIdRepository
 from repositories.TimezonesRepository import TimezonesRepository
 from services.GeoInfoService import GeoInfoService
@@ -12,7 +12,7 @@ class GeoComparisonService:
     def __init__(self):
         self.geo_info_service = GeoInfoService()
         self.nameid_repository = NameIdRepository()
-        self.info_repository = InfoRepository()
+        self.info_repository = GeoInfoRepository()
 
     def compare_geo_items(self, geoname_1: str, geoname_2: str) -> Dict[str, Any]:
         geo_item_1, geo_item_2 = self.__get_geo_item_by_name(geoname_1), self.__get_geo_item_by_name(geoname_2)

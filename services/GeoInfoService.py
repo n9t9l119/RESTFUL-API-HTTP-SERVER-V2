@@ -2,13 +2,13 @@ from typing import Union, Dict, Any, List
 
 from db.model import GeoInfo, NameId
 from db.serializers.ModelSerializer import ModelSerializer
-from repositories.InfoRepository import InfoRepository
+from repositories.GeoInfoRepository import GeoInfoRepository
 from repositories.NameIdRepository import NameIdRepository
 
 
 class GeoInfoService:
     def __init__(self):
-        self.__info_repository = InfoRepository()
+        self.__info_repository = GeoInfoRepository()
         self.__nameid_repository = NameIdRepository()
 
     def get_geoinfo_by_geonameid(self, geonameid: str) -> Union[Dict[str, Any], None]:
