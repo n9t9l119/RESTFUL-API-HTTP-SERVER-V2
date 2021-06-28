@@ -28,7 +28,7 @@ class ApiView(FlaskView):
         if validated_geonameid is None:
             return self.__bad_request_response.positive_int_expected(expected_keys)
 
-        geoinfo = self.__geo_info_service.get_item_by_geonameid(json_request[expected_keys[0]])
+        geoinfo = self.__geo_info_service.get_geoinfo_by_geonameid(json_request[expected_keys[0]])
 
         if geoinfo is None:
             return Response("Such id does not exist!", status=404, mimetype='text/plain')
@@ -62,7 +62,7 @@ class ApiView(FlaskView):
             return self.__bad_request_response.incorrect_symbols(expected_keys)
 
         return jsonify(
-            self.__geo_comparison_service.compare_geos(json_request[expected_keys[0]], json_request[expected_keys[0]]))
+            self.__geo_comparison_service.compare_geo_items(json_request[expected_keys[0]], json_request[expected_keys[1]]))
 
     @route('/hintname', methods=["POST"])
     def hint_name(self) -> Response:

@@ -1,49 +1,46 @@
 from typing import Union, Dict, Any, List
 
 from db.model import GeoInfo, NameId
+from db.serializers.ModelSerializer import ModelSerializer
 from repositories.InfoRepository import InfoRepository
 from repositories.NameIdRepository import NameIdRepository
 
 
 class GeoInfoService:
-    def get_item_by_geonameid(self, geonameid: str):
-        item = InfoRepository().get_first_by_geonameid(geonameid)
+    def __init__(self):
+        self.__info_repository = InfoRepository()
+        self.__nameid_repository = NameIdRepository()
 
-        if item is None:
+    def get_geoinfo_by_geonameid(self, geonameid: str) -> Union[Dict[str, Any], None]:
+        geoitem = self.__info_repository.get_first_by_geonameid(geonameid)
+
+        if geoitem is None:
             return None
 
-        return self.make_geoinfo_dict(item)
+        return self.make_geoinfo_dict(geoitem)
 
-    def make_geoinfo_dict(self, item: GeoInfo) -> Union[Dict[str, Any], None]:
-        if item is None:
+    def make_geoinfo_dict(self, geo_item: GeoInfo) -> Union[Dict[str, Any], None]:
+        if geo_item is None:
             return None
 
-        alternames = self.get_geo_alternames(str(item.geonameid))
-        info_in_dict = {'geonameid': item.geonameid, 'name': item.name, 'asciiname': item.asciiname,
-                        'alternatenames': alternames if alternames else "", 'latitude': item.latitude,
-                        'longitude': item.longitude,
-                        'feature class': item.feature_class, 'feature_code': item.feature_code,
-                        'country_code': item.country_code, 'cc2': item.cc2, 'admin1_code': item.admin1_code,
-                        'admin2_code': item.admin2_code, 'admin3_code': item.admin3_code,
-                        'admin4_code': item.admin4_code, 'population': item.population, 'elevation': item.elevation,
-                        'dem': item.dem, 'timezone': item.timezone, 'modification_date': item.modification_date}
-        return info_in_dict
+        alternames = self.__get_geoitem_alternames(str(geo_item.geonameid))
 
-    def get_geo_alternames(self, geonameid: str) -> Union[str, List[str]]:
-        alternames = NameIdRepository().get_all_filtered_by_geonameid(geonameid)
-        names = self.create_geo_alternames_lst(geonameid, alternames)
-        # if not names:
-        #     return ""
-        return names
+        return ModelSerializer.serialize_geo_info(geo_item, alternames)
 
-    def create_geo_alternames_lst(self, geonameid: str, alternames: List[NameId]) -> List[str]:
+    def __get_geoitem_alternames(self, geonameid: str) -> List[str]:
+        alternames = self.__nameid_repository.get_all_filtered_by_geonameid(geonameid)
+        alternames_list = self.create_geoitem_alternames_list(geonameid, alternames)
+
+        return alternames_list
+
+    def create_geoitem_alternames_list(self, geonameid: str, alternames: List[NameId]) -> List[str]:
         names = []
 
         for name in alternames:
             names.append(name.name)
 
         if names:
-            geo = InfoRepository().get_first_by_geonameid(geonameid)
-            names.remove(InfoRepository().get_geo_name(geo))
+            geo = self.__info_repository.get_first_by_geonameid(geonameid)
+            names.remove(self.__info_repository.get_geo_name(geo))
 
         return names

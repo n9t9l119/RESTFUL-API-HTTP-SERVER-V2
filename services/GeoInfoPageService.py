@@ -5,9 +5,13 @@ from repositories.InfoRepository import InfoRepository
 
 
 class GeoInfoPageService:
+    def __init__(self):
+        self.__info_repository = InfoRepository()
+        self.geo_info_service = GeoInfoService()
+
     def get_page(self, page_number: int, items_value: int) -> List[Dict[str, Any]]:
-        start_id = items_value * (page_number-1) + 1
-        return self.make_geoinfo_lst(items_value, start_id)
+        start_id = items_value * (page_number - 1) + 1
+        return self.__make_geoinfo_lst(items_value, start_id)
 
     # def input_validation(self, page_number: int, items_value: int) -> Union[bool, Response]:
     #     if re.match(r'[0-9]{1,6}$', str(page_number)) \
@@ -24,8 +28,8 @@ class GeoInfoPageService:
     #         return Response("That get_page is empty!", status=400, mimetype='text/plain')
     #     return True
 
-    def make_geoinfo_lst(self, items_value: int, start_id: int) -> List[Dict[str, Any]]:
+    def __make_geoinfo_lst(self, items_value: int, start_id: int) -> List[Dict[str, Any]]:
         items = []
         for value in range(items_value):
-            items.append(GeoInfoService().make_geoinfo_dict(InfoRepository().get_by_id(start_id + value)))
+            items.append(self.geo_info_service.make_geoinfo_dict(self.__info_repository.get_by_id(start_id + value)))
         return items

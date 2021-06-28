@@ -23,7 +23,7 @@ def test_getpage():
 
 def test_getcomparison():
     response = requests.post('http://127.0.0.1:8000/api/getcomparison', json={
-        "Geo_1": "Озеро Сяркиярви",
+        "Geo_1": "Знаменка",
         "Geo_2": "Явидово"
     })
 
