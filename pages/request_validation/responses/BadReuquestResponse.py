@@ -1,7 +1,7 @@
 from flask import Response
 
 
-class BadRequestResponse:
+class ClientErrorResponse:
     @staticmethod
     def unable_parse_request():
         return Response(f'Incorrect request!\nUnable to parse the request.',
