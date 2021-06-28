@@ -53,13 +53,13 @@
 ###### Запрос:
 	
         {
-	    "page":0,
-	    "items_value":2
+            "page":1,
+            "items_value":2
         }
 
 ######   Ответ:
 	
-        [
+         [
             {
                 "geonameid": 451747,
                 "name": "Zyabrikovo",
@@ -79,9 +79,9 @@
                 "elevation": "",
                 "dem": 204,
                 "timezone": "Europe/Moscow",
-                "modification_date": "2011-07-09"
-          },
-          {
+            "modification_date": "2011-07-09"
+            },
+            {
                 "geonameid": 451748,
                 "name": "Znamenka",
                 "asciiname": "Znamenka",
@@ -101,8 +101,8 @@
                 "dem": 215,
                 "timezone": "Europe/Moscow",
                 "modification_date": "2011-07-09"
-           }
-     ]
+            }
+        ]
 
 #### 3. getcomparison - метод, принимающий названия двух локаций (на русском языке) и возвращающий:
     1) информацию о найденных городах
@@ -113,14 +113,14 @@
 ######  Запрос:
 	
         {
-	    "geo_1":"Озеро Сяркиярви",
-	    "geo_2":"Явидово"
+            "geo_1":"Озеро Сяркиярви",
+            "geo_2":"Явидово"
         }
 		
 ######  Ответ:
 	
         {
-            "geo_1": {
+        "geo_1": {
             "geonameid": 12121691,
             "name": "Ozero Syarkiyarvi",
             "asciiname": "Ozero Syarkiyarvi",
@@ -143,7 +143,7 @@
             "dem": 78,
             "timezone": "Europe/Moscow",
             "modification_date": "2020-01-11"
-       },
+        },
         "geo_2": {
             "geonameid": 451769,
             "name": "Yavidovo",
@@ -152,26 +152,26 @@
                 "Javidovo",
                 "Явидово"
             ],
-           "latitude": "56.87068",
-           "longitude": "34.51994",
-           "feature class": "P",
-           "feature_code": "PPL",
-           "country_code": "RU",
-           "cc2": "",
-           "admin1_code": "77",
-           "admin2_code": "",
-           "admin3_code": "",
-           "admin4_code": "",
-           "population": 0,
-           "elevation": "",
-           "dem": 217,
-           "timezone": "Europe/Moscow",
-           "modification_date": "2012-01-16"
+            "latitude": "56.87068",
+            "longitude": "34.51994",
+            "feature class": "P",
+            "feature_code": "PPL",
+            "country_code": "RU",
+            "cc2": "",
+            "admin1_code": "77",
+            "admin2_code": "",
+            "admin3_code": "",
+            "admin4_code": "",
+            "population": 0,
+            "elevation": "",
+            "dem": 217,
+            "timezone": "Europe/Moscow",
+            "modification_date": "2012-01-16"
         },
         "compares": {
-            "Northern geo": "Ozero Syarkiyarvi",
-            "Northern latitude": "61.72219",
-            "Timezones_difference": 0
+            "northern geo": "Ozero Syarkiyarvi",
+            "northern latitude": "61.72219",
+            "timezones_difference": "0.0"
         }
     }
 	
