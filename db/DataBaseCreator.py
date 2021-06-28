@@ -3,29 +3,29 @@ from typing import IO, List, Union
 import logging
 
 from config import db_path, db
-from db.TimezonesTxtConverter import TimezonesTxtConverter
-from db.RuTxtConvertor import RuTxtConvertor
+from db.txt_convertors.TimezonesTxtConverter import TimezonesTxtConverter
+from db.txt_convertors.RuTxtConvertor import RuTxtConvertor
 from db.model import GeoInfo, NameId
 from db.serializers.ModelSerializer import ModelSerializer
 
 
 class DataBaseCreator:
     def __init__(self, ru_txt_path: str, timezones_txt_path: str):
-        self.__ru_txt = open(ru_txt_path, 'r', encoding="utf8")
-        self.__timezones_txt = open(timezones_txt_path, 'r', encoding="utf8")
+        self.__ru_txt = open(ru_txt_path, 'r', encoding='utf8')
+        self.__timezones_txt = open(timezones_txt_path, 'r', encoding='utf8')
 
         self.__ru_txt_convertor = RuTxtConvertor()
         self.__timezones_txt_convertor = TimezonesTxtConverter()
 
     def create_database(self) -> None:
         logging.basicConfig(level=logging.INFO)
-        if not os.path.exists('..' + db_path):
-            logging.info("Database creation is started")
+        if not os.path.exists(db_path):
+            logging.info('Database creation is started')
             db.create_all()
             self.__fill_database()
-            logging.info("Database creation was completed successfully")
+            logging.info('Database creation was completed successfully')
         else:
-            logging.info("Database is already exist!")
+            logging.info(f'Database in directory {db_path} already exist')
 
     def __fill_database(self) -> None:
         self.__put_ru_txt_in_database(self.__ru_txt)
@@ -78,7 +78,7 @@ class DataBaseCreator:
         # TODO вытащить число
         if len(table) >= 600000:
             self.__add_items_to_database(table)
-            logging.info("Database creation is in progress...")
+            logging.info('Database creation is in progress...')
             return []
         return table
 

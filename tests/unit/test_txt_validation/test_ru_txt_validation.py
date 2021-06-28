@@ -8,7 +8,7 @@ class Patterns:
 
 
 def test_cells_info():
-    ru = open('../../../db/files_for_generating_database/RU.txt', 'r', encoding="utf8")
+    ru = open('../../../RU.txt', 'r', encoding="utf8")
     for string in ru.readlines():
         cells = string.split('\t')
         match_cells(cells)

@@ -11,6 +11,6 @@ class GeoNameHintService:
         return self.__make_hint_list(request)
 
     def __make_hint_list(self, request: str) -> List[str]:
-        hint_list = self.__nameid_repository.filter(request)
+        hint_list = self.__nameid_repository.get_items_by_name_template(request)
         hint_list = [hint.name for hint in hint_list]
         return list(set(hint_list))

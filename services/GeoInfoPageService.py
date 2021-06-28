@@ -31,5 +31,5 @@ class GeoInfoPageService:
     def __make_geoinfo_lst(self, items_value: int, start_id: int) -> List[Dict[str, Any]]:
         items = []
         for value in range(items_value):
-            items.append(self.geo_info_service.make_geoinfo_dict(self.__info_repository.get_by_id(start_id + value)))
+            items.append(self.geo_info_service.make_geoinfo_dict(self.__info_repository.get_item_by_id(start_id + value)))
         return items

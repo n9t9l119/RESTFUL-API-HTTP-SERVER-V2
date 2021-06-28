@@ -12,7 +12,7 @@ class GeoInfoService:
         self.__nameid_repository = NameIdRepository()
 
     def get_geoinfo_by_geonameid(self, geonameid: str) -> Union[Dict[str, Any], None]:
-        geoitem = self.__info_repository.get_first_by_geonameid(geonameid)
+        geoitem = self.__info_repository._get_first_by_geonameid(geonameid)
 
         if geoitem is None:
             return None
@@ -40,7 +40,6 @@ class GeoInfoService:
             names.append(name.name)
 
         if names:
-            geo = self.__info_repository.get_first_by_geonameid(geonameid)
-            names.remove(self.__info_repository.get_geo_name(geo))
+            names.remove(self.__info_repository.get_geoname_by_geonameid(geonameid))
 
         return names

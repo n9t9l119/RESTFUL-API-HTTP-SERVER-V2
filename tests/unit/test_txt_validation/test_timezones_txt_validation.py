@@ -2,7 +2,7 @@ import re
 
 
 def test_cells_timezones():
-    timezones = open('../../../db/files_for_generating_database/timezones.txt', 'r', encoding="utf8")
+    timezones = open('../../../timezones.txt', 'r', encoding="utf8")
     strings = timezones.readlines()[1:]
     for string in strings:
         cells = string.split('\t')

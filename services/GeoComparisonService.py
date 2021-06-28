@@ -1,7 +1,7 @@
 from transliterate import translit
 from typing import Union, Dict, Any, List
 
-from db.model import GeoInfo, Timezones
+from db.model import GeoInfo
 from repositories.GeoInfoRepository import GeoInfoRepository
 from repositories.NameIdRepository import NameIdRepository
 from repositories.TimezonesRepository import TimezonesRepository
@@ -13,6 +13,7 @@ class GeoComparisonService:
         self.geo_info_service = GeoInfoService()
         self.nameid_repository = NameIdRepository()
         self.info_repository = GeoInfoRepository()
+        self.timezones_repository = TimezonesRepository()
 
     def compare_geo_items(self, geoname_1: str, geoname_2: str) -> Dict[str, Any]:
         geo_item_1, geo_item_2 = self.__get_geo_item_by_name(geoname_1), self.__get_geo_item_by_name(geoname_2)
@@ -51,7 +52,7 @@ class GeoComparisonService:
 
         if ids:
             for id in ids:
-                item = self.info_repository.get_first_by_geonameid(id)
+                item = self.info_repository.__get_first_by_geonameid(id)
                 if item is not None:
                     geo_items.append(item)
 
@@ -96,10 +97,8 @@ class GeoComparisonService:
             return "Undefinded"
         return str(time_1 - time_2)
 
-    @staticmethod
-    def __get_timezone_offset_by_timezone_name(timezone_name: str) -> Union[Timezones, None]:
+    def __get_timezone_offset_by_timezone_name(self, timezone_name: str) -> Union[float, None]:
         if timezone_name == "":
             return None
         else:
-            timezone_name = TimezonesRepository().get_first_by_timezone(timezone_name)
-            return TimezonesRepository().get_timezone_offset(timezone_name)
+            return self.timezones_repository.get_timezone_offset(timezone_name)

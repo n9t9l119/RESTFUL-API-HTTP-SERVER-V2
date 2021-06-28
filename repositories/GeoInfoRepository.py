@@ -1,16 +1,21 @@
+from typing import Union, List
+
 from db.model import GeoInfo
+from repositories.AbstractRepositories import AbstractGeoInfoRepository
 
 
-class GeoInfoRepository:
+class GeoInfoRepository(AbstractGeoInfoRepository):
+    def get_item_by_id(self, id: int) -> Union[GeoInfo, None]:
+        try:
+            return GeoInfo.query.get(id)
+        except:
+            return None
 
-    def get_by_id(self, id):
-        return GeoInfo.query.get(id)
-
-    def get_all(self):
+    def get_all(self) -> List[GeoInfo]:
         return GeoInfo.query.all()
 
-    def get_first_by_geonameid(self, geonameid):
+    def _get_first_by_geonameid(self, geonameid: int) -> GeoInfo:
         return GeoInfo.query.filter_by(geonameid=geonameid).first()
 
-    def get_geo_name(self, geo):
-        return geo.name
+    def get_geoname_by_geonameid(self, geonameid: int) -> str:
+        return self._get_first_by_geonameid(geonameid).name
