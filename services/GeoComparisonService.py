@@ -20,9 +20,9 @@ class GeoComparisonService:
         return self.make_compare_dict(geo_item_1, geo_item_2)
 
     def make_compare_dict(self, geo_item_1: GeoInfo, geo_item_2: GeoInfo) -> Dict[str, Any]:
-        geo_items_comparison_dict = {response_keys[0]: self.__geo_info_service.make_geoinfo_dict(geo_item_1),
-                                     response_keys[1]: self.__geo_info_service.make_geoinfo_dict(geo_item_2),
-                                     response_keys[2]: self.__compare_geo_items(geo_item_1, geo_item_2)}
+        geo_items_comparison_dict = {response_keys['geocomparision'][0]: self.__geo_info_service.make_geoinfo_dict(geo_item_1),
+                                     response_keys['geocomparision'][1]: self.__geo_info_service.make_geoinfo_dict(geo_item_2),
+                                     response_keys['geocomparision'][2]: self.__compare_geo_items(geo_item_1, geo_item_2)}
         return geo_items_comparison_dict
 
     def __get_geo_item_by_name(self, geoname: str) -> GeoInfo:

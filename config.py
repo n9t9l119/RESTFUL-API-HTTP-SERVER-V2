@@ -26,7 +26,7 @@ request_keys = {
 }
 
 response_keys = {
-    'geocomparision': ('geo_1', 'geo_2', {'compares': ('timezones_difference', 'northern latitude', 'northern geo')})
+    'geocomparision': ('geo_1', 'geo_2', 'compares'),
+    'compares': ('timezones_difference', 'northern latitude', 'northern geo')
 }
-print(response_keys['geocomparision'][2]['compares'][0])
 db = SQLAlchemy(app)

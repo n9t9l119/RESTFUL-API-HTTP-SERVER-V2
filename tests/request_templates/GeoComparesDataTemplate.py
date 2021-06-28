@@ -10,7 +10,7 @@ class GeoComparesDataTemplate(AbstractDataTemplate):
     __northern_latitude_pattern = r'[-]?[0-9]{1,3}\.*[0-9]{0,5}$'
 
     def check_template_matches(self, compares: Dict) -> bool:
-        compares_key = response_keys['geocomparision'][2]['compares']
+        compares_key = response_keys['compares']
         return compares == None or re.match(self.__timezones_difference_pattern,
                                             str(compares[compares_key[0]])) and \
                re.match(self.__northern_latitude_pattern, str(compares[compares_key[1]])) and \
