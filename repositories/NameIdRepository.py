@@ -18,4 +18,4 @@ class NameIdRepository(AbstractNameIdRepository):
         return NameId.query.filter_by(geonameid=geonameid)
 
     def get_items_by_name_template(self, request: str) -> List[NameId]:
-        return NameId.query.get_items_by_name_template(NameId.name.ilike(f'%{request}%'))
+        return NameId.query.filter(NameId.name.ilike(f'%{request}%'))

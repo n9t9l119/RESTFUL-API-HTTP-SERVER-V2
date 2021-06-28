@@ -12,43 +12,42 @@
 * Программа включает покрытие тестами. Они находятся в папке tests.(Тесты проверялись на mock'e базы данных.
 Для подключения программы к mock'у необходимо в файле config.py раскомментировать строку "app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://' + test_db_path".)
 
-### По адресу http://127.0.0.1:8000/api/<название_метода> cервер предоставляет REST API сервис с методами:
+### По адресу http://127.0.0.1:8000/api/<название_метода> cервер предоставляет REST API сервис, принимающий запросы в формате json и предоставляющий методы:
 
-#### 1. getinfo	- метод, принимающий идентификатор geonameid (raw data) и возвращающий информацию о локации.
+#### 1. getinfo	- метод, принимающий идентификатор geonameid и возвращающий информацию о локации.
 
 ##### Пример:
  ######  Запрос:
 	
-        12121691
+        {
+            "Geo_id": 451750
+        }
 		
 ######   Ответ:
 	
         {
-            "geonameid": 12121691,
-            "name": "Ozero Syarkiyarvi",
-            "asciiname": "Ozero Syarkiyarvi",
-            "alternatenames": [
-                "Ozero Sjarkijarvi",
-                "Озеро Сяркиярви"
-            ],
-            "latitude": "61.72219",
-            "longitude": "30.51401",
-            "feature class": "H",
-            "feature_code": "LK",
+            "geonameid": 451750,
+            "name": "Zhitovo",
+            "asciiname": "Zhitovo",
+            "alternatenames": "",
+            "latitude": "57.29693",
+            "longitude": "34.41848",
+            "feature class": "P",
+            "feature_code": "PPL",
             "country_code": "RU",
             "cc2": "",
-            "admin1_code": "28",
+            "admin1_code": "77",
             "admin2_code": "",
             "admin3_code": "",
             "admin4_code": "",
             "population": 0,
             "elevation": "",
-            "dem": 78,
+            "dem": 247,
             "timezone": "Europe/Moscow",
-            "modification_date": "2020-01-11"
-       }
+            "modification_date": "2011-07-09"
+        }
 
-#### 2. getpage - метод, принимающий страницу и количество отображаемых на странице локаций в формате JSON и возвращающий
+#### 2. getpage - метод, принимающий страницу и количество отображаемых на странице локаций и возвращающий
  Cписок городов с их информацией. Отсчет страниц начинается с 0.
 
 ##### Пример:
@@ -106,7 +105,7 @@
            }
      ]
 
-#### 3. getcomparison - метод, принимающий названия двух локаций (на русском языке) в формате JSON и возвращающий:
+#### 3. getcomparison - метод, принимающий названия двух локаций (на русском языке) и возвращающий:
     1) информацию о найденных городах
     2) название локации, расположенной севернее другой
     3) количество часов, на которое различаются временные зоны
@@ -177,21 +176,42 @@
         }
     }
 	
-#### 4. hintname - метод принимающий часть названия города (raw data) и возвращающий ему подсказку с возможными вариантами продолжений
+#### 4. hintname - метод принимающий часть названия города и возвращающий ему подсказку с возможными вариантами продолжений
 
 ##### Пример:
 ######    Запрос:
 	
-        Yasnaya
+        {
+            "Hint": "Yasnaya"
+        }
 		
    ###### Ответ:
 	
         [
+            "Les Yasnaya Polyana",
+            "Balka Ryasnaya",
+            "Razvaliny Yasnaya Polyana",
+            "Stantsiya Yasnaya",
+            "Myasnaya",
+            "Yasnaya Zor’ka",
+            "Bol’shaya Myasnaya",
             "Yasnaya Polyana",
             "Yasnaya Zvezda",
-            "Yasnaya Zor’ka",
+            "Yasnaya-Polyana",
+            "Urochishche Sladko-Ryasnaya Plavnya",
             "Yasnaya Zor'ka",
-            "Yasnaya Zarya",
+            "Ostanovochnyy Punkt Yasnaya",
+            "Ostanovochnyy Punkt Yasnaya Polyana",
+            "Pionerlager' Yasnaya Polyana",
+            "Lager’ Otdykha Yasnaya Polyana",
+            "Detskiy Lager’ Yasnaya Polyana",
             "Yasnaya",
-            "Yasnaya-Polyana"
-        ]
+            "Bol'shaya Myasnaya",
+            "Gora Yasnaya",
+            "Lager' Otdykha Yasnaya Polyana",
+            "Stantsiya Yasnaya Polyana",
+            "Urochishche Yasnaya Polyana",
+            "Pionerlager’ Yasnaya Polyana",
+            "Yasnaya Zarya",
+            "Detskiy Lager' Yasnaya Polyana"
+        ]   

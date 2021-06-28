@@ -3,8 +3,8 @@ from typing import IO, List, Union
 import logging
 
 from config import db_path, db
-from db.txt_convertors.TimezonesTxtConverter import TimezonesTxtConverter
-from db.txt_convertors.RuTxtConvertor import RuTxtConvertor
+from db.database_creation.txt_convertors.TimezonesTxtConverter import TimezonesTxtConverter
+from db.database_creation.txt_convertors.RuTxtConvertor import RuTxtConvertor
 from db.model import GeoInfo, NameId
 from db.serializers.ModelSerializer import ModelSerializer
 

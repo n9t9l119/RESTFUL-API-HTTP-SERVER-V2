@@ -1,12 +1,12 @@
 from flask_classy import FlaskView, route
 from flask import request, Response, jsonify
 
-from BadReuquestResponse import BadRequestResponse
+from request_validation.responses.BadReuquestResponse import BadRequestResponse
 from services.GeoComparisonService import GeoComparisonService
 from services.GeoInfoService import GeoInfoService
 from services.GeoNameHintService import GeoNameHintService
 from services.GeoInfoPageService import GeoInfoPageService
-from validators.RequestValidator import RequestValidator
+from request_validation.RequestValidator import RequestValidator
 
 
 class ApiView(FlaskView):
