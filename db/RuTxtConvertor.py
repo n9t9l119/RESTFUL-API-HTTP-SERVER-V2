@@ -4,7 +4,7 @@ from db.model import GeoInfo
 
 
 class RuTxtConvertor:
-    def convert_str_to_info(self, cells: List[str]):
+    def convert_cells_to_info_dict(self, cells: List[str]):
         info_string = dict(
             geonameid=cells[0],
             name=cells[1],
@@ -32,7 +32,7 @@ class RuTxtConvertor:
         cells[-1] = cells[-1].replace("\n", "")
         return cells
 
-    def convert_str_to_nameid(self, cells: List[str], item: GeoInfo) -> List[Dict[str, Union[str, GeoInfo]]]:
+    def convert_cells_to_nameid_dct(self, cells: List[str], item: GeoInfo) -> List[Dict[str, Union[str, GeoInfo]]]:
         all_str_names_to_db = []
         names = self.__all_names_in_str(cells)
         for name in names:

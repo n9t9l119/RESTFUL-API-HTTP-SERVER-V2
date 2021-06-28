@@ -1,8 +1,9 @@
-from db.model import GeoInfo, NameId
+from db.model import GeoInfo, NameId, Timezones
 
 
-class Serializer:
-    def serialize_geo_info(self, geo_info):
+class ModelSerializer:
+    @staticmethod
+    def deserialize_geo_info(geo_info) -> GeoInfo:
         return GeoInfo(
             geonameid=geo_info.get('geonameid'),
             name=geo_info.get('name'),
@@ -24,5 +25,10 @@ class Serializer:
             timezone=geo_info.get('timezone'),
             modification_date=geo_info.get('modification_date'))
 
-    def serialize_name_id(self, name_id):
+    @staticmethod
+    def deserialize_name_id(name_id) -> NameId:
         return NameId(name=name_id.get('name'), idlnk=name_id.get('idlnk'))
+
+    @staticmethod
+    def deserialize_timezones(timezones) -> Timezones:
+        return Timezones(time_zone=timezones.get('time_zone'), offset=timezones.get('offset'))
