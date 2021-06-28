@@ -1,15 +1,13 @@
 import json
-
 import pytest
 import requests
 
 from tests.request_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
+from config import request_keys
 
 
 class TestGeoInfoRequest:
-    key = 'Geo_id'
-
-    @pytest.mark.parametrize('key', [(key)])
+    @pytest.mark.parametrize('key', [(*request_keys['geoinfo'])])
     def test_getinfo_200(self, key):
         response = requests.post('http://127.0.0.1:8000/api/getinfo',
                                  json={
@@ -24,7 +22,7 @@ class TestGeoInfoRequest:
 
         GeoInfoDataTemplate().check_template_matches(list(response_values))
 
-    @pytest.mark.parametrize('key', [(key)])
+    @pytest.mark.parametrize('key', [(*request_keys['geoinfo'])])
     def test_getinfo_positive_int_expected(self, key):
         response = requests.post('http://127.0.0.1:8000/api/getinfo', json={
             key: -451750
@@ -34,7 +32,7 @@ class TestGeoInfoRequest:
         assert response.status_code == 400
         assert response.text == f'Incorrect request!\n{key} must be positive int.'
 
-    @pytest.mark.parametrize('key', [(key)])
+    @pytest.mark.parametrize('key', [(*request_keys['geoinfo'])])
     def test_getinfo_keys_not_found(self, key):
         response = requests.post('http://127.0.0.1:8000/api/getinfo', json={
             'Geo': 451750
@@ -44,7 +42,7 @@ class TestGeoInfoRequest:
         assert response.status_code == 400
         assert response.text == f'Incorrect request!\nIt must be json with keys {key}!'
 
-    @pytest.mark.parametrize('key', [(key)])
+    @pytest.mark.parametrize('key', [(*request_keys['geoinfo'])])
     def test_getinfo_geonameid_does_not_exist(self, key):
         response = requests.post('http://127.0.0.1:8000/api/getinfo', json={
             key: 1

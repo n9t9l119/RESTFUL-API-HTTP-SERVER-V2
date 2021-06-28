@@ -3,12 +3,11 @@ import requests
 import json
 
 from tests.request_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
+from config import request_keys
 
 
 class TestGetPage:
-    keys = 'Page', 'Items_value'
-
-    @pytest.mark.parametrize('keys', [(keys)])
+    @pytest.mark.parametrize('keys', [(request_keys['getpage'])])
     def test_getpage_200(self, keys):
         response = requests.post('http://127.0.0.1:8000/api/getpage', json={
             keys[0]: 1,
@@ -26,7 +25,7 @@ class TestGetPage:
             response_values = dict(item).values()
             GeoInfoDataTemplate().check_template_matches(list(response_values))
 
-    @pytest.mark.parametrize('keys', [(keys)])
+    @pytest.mark.parametrize('keys', [(request_keys['getpage'])])
     def test_getpage_positive_int_expected(self, keys):
         response = requests.post('http://127.0.0.1:8000/api/getpage', json={
             keys[0]: -1,
@@ -35,9 +34,9 @@ class TestGetPage:
 
         assert response.headers['Content-Type'] == 'text/plain; charset=utf-8'
         assert response.status_code == 400
-        assert response.text == 'Incorrect request!\nPage, Items_value must be positive int.'
+        assert response.text == f'Incorrect request!\n{keys[0]}, {keys[1]} must be positive int.'
 
-    @pytest.mark.parametrize('keys', [(keys)])
+    @pytest.mark.parametrize('keys', [(request_keys['getpage'])])
     def test_getpage_keys_not_found(self, keys):
         response = requests.post('http://127.0.0.1:8000/api/getpage', json={
             keys[1]: 2
@@ -45,4 +44,4 @@ class TestGetPage:
 
         assert response.headers['Content-Type'] == 'text/plain; charset=utf-8'
         assert response.status_code == 400
-        assert response.text == 'Incorrect request!\nIt must be json with keys Page, Items_value!'
+        assert response.text == f'Incorrect request!\nIt must be json with keys {keys[0]}, {keys[1]}!'

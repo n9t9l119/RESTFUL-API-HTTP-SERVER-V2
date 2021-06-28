@@ -7,6 +7,7 @@ from services.GeoInfoService import GeoInfoService
 from services.GeoNameHintService import GeoNameHintService
 from services.GeoInfoPageService import GeoInfoPageService
 from pages.request_validation.RequestValidator import RequestValidator
+from config import request_keys
 
 
 class ApiView(FlaskView):
@@ -27,17 +28,15 @@ class ApiView(FlaskView):
         if not json_request:
             return BadRequestResponse.json_expected()
 
-        expected_keys = 'Geo_id',
+        if self.__request_validator.find_keys_in_request(json_request, *request_keys['geoinfo']) is None:
+            return BadRequestResponse.keys_not_found(request_keys['geoinfo'])
 
-        if self.__request_validator.find_keys_in_request(json_request, *expected_keys) is None:
-            return BadRequestResponse.keys_not_found(expected_keys)
-
-        validated_geonameid = self.__request_validator.try_convert_to_positive_int(json_request[expected_keys[0]])
+        validated_geonameid = self.__request_validator.try_convert_to_positive_int(json_request[request_keys['geoinfo'][0]])
 
         if validated_geonameid is None:
-            return BadRequestResponse.positive_int_expected(expected_keys)
+            return BadRequestResponse.positive_int_expected(request_keys['geoinfo'])
 
-        geoinfo = self.__geo_info_service.get_geoinfo_by_geonameid(json_request[expected_keys[0]])
+        geoinfo = self.__geo_info_service.get_geoinfo_by_geonameid(json_request[request_keys['geoinfo'][0]])
 
         if geoinfo is None:
             return BadRequestResponse.geonameid_does_not_exist()
@@ -54,16 +53,14 @@ class ApiView(FlaskView):
         if not json_request:
             return BadRequestResponse.json_expected()
 
-        expected_keys = 'Page', 'Items_value'
-
-        if self.__request_validator.find_keys_in_request(json_request, *expected_keys) is None:
-            return BadRequestResponse.keys_not_found(expected_keys)
+        if self.__request_validator.find_keys_in_request(json_request, *request_keys['getpage']) is None:
+            return BadRequestResponse.keys_not_found(request_keys['getpage'])
 
         if self.__request_validator.try_convert_request_values_to_positive_int(json_request) is None:
-            return BadRequestResponse.positive_int_expected(expected_keys)
+            return BadRequestResponse.positive_int_expected(request_keys['getpage'])
 
         return jsonify(
-            self.__geo_info_page_service.get_page(json_request[expected_keys[0]], json_request[expected_keys[1]]))
+            self.__geo_info_page_service.get_page(json_request[request_keys['getpage'][0]], json_request[request_keys['getpage'][1]]))
 
     @route('/getcomparison', methods=["POST"])
     def get_comparison(self) -> Response:
@@ -75,17 +72,15 @@ class ApiView(FlaskView):
         if not json_request:
             return BadRequestResponse.json_expected()
 
-        expected_keys = 'Geo_1', 'Geo_2'
-
-        if self.__request_validator.find_keys_in_request(json_request, *expected_keys) is None:
-            return BadRequestResponse.keys_not_found(expected_keys)
+        if self.__request_validator.find_keys_in_request(json_request, *request_keys['getcomparison']) is None:
+            return BadRequestResponse.keys_not_found(request_keys['getcomparison'])
 
         if self.__request_validator.check_match_request_values_to_pattern(r'[А-Яа-я0-9\s]*$', json_request) is None:
-            return BadRequestResponse.incorrect_symbols(expected_keys)
+            return BadRequestResponse.incorrect_symbols(request_keys['getcomparison'])
 
         return jsonify(
-            self.__geo_comparison_service.compare_geo_items(json_request[expected_keys[0]],
-                                                            json_request[expected_keys[1]]))
+            self.__geo_comparison_service.compare_geo_items(json_request[request_keys['getcomparison'][0]],
+                                                            json_request[request_keys['getcomparison'][1]]))
 
     @route('/hintname', methods=["POST"])
     def hint_name(self) -> Response:
@@ -97,15 +92,13 @@ class ApiView(FlaskView):
         if not json_request:
             return BadRequestResponse.json_expected()
 
-        expected_keys = 'Hint',
-
-        if self.__request_validator.find_keys_in_request(json_request, *expected_keys) is None:
-            return BadRequestResponse.keys_not_found(expected_keys)
+        if self.__request_validator.find_keys_in_request(json_request, *request_keys['hintname']) is None:
+            return BadRequestResponse.keys_not_found(request_keys['hintname'])
 
         validated_hintname = self.__request_validator.check_match_with_pattern(r'[\wА-Яа-я\d]*',
-                                                                               json_request[expected_keys[0]])
+                                                                               json_request[request_keys['hintname'][0]])
 
         if validated_hintname is None:
-            return BadRequestResponse.incorrect_symbols(expected_keys)
+            return BadRequestResponse.incorrect_symbols(request_keys['hintname'])
 
-        return jsonify(self.__geo_name_hint_service.get_hint(json_request[expected_keys[0]]))
+        return jsonify(self.__geo_name_hint_service.get_hint(json_request[request_keys['hintname'][0]]))

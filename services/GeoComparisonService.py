@@ -6,23 +6,23 @@ from repositories.GeoInfoRepository import GeoInfoRepository
 from repositories.NameIdRepository import NameIdRepository
 from repositories.TimezonesRepository import TimezonesRepository
 from services.GeoInfoService import GeoInfoService
-
+from config import response_keys
 
 class GeoComparisonService:
     def __init__(self):
-        self.geo_info_service = GeoInfoService()
-        self.nameid_repository = NameIdRepository()
-        self.info_repository = GeoInfoRepository()
-        self.timezones_repository = TimezonesRepository()
+        self.__geo_info_service = GeoInfoService()
+        self.__nameid_repository = NameIdRepository()
+        self.__info_repository = GeoInfoRepository()
+        self.__timezones_repository = TimezonesRepository()
 
     def compare_geo_items(self, geoname_1: str, geoname_2: str) -> Dict[str, Any]:
         geo_item_1, geo_item_2 = self.__get_geo_item_by_name(geoname_1), self.__get_geo_item_by_name(geoname_2)
         return self.make_compare_dict(geo_item_1, geo_item_2)
 
     def make_compare_dict(self, geo_item_1: GeoInfo, geo_item_2: GeoInfo) -> Dict[str, Any]:
-        geo_items_comparison_dict = {'geo_1': self.geo_info_service.make_geoinfo_dict(geo_item_1),
-                                     'geo_2': GeoInfoService().make_geoinfo_dict(geo_item_2),
-                                     'compares': self.__compare_geo_items(geo_item_1, geo_item_2)}
+        geo_items_comparison_dict = {response_keys[0]: self.__geo_info_service.make_geoinfo_dict(geo_item_1),
+                                     response_keys[1]: self.__geo_info_service.make_geoinfo_dict(geo_item_2),
+                                     response_keys[2]: self.__compare_geo_items(geo_item_1, geo_item_2)}
         return geo_items_comparison_dict
 
     def __get_geo_item_by_name(self, geoname: str) -> GeoInfo:
@@ -38,7 +38,7 @@ class GeoComparisonService:
         return list(set(ids_for_latin).union(ids_for_cyrillic))
 
     def __get_geoids_by_geoname(self, geoname: str) -> List[int]:
-        geo_items = self.nameid_repository.get_all_filtered_by_name(geoname)
+        geo_items = self.__nameid_repository.get_all_filtered_by_name(geoname)
         geoids = []
 
         if geo_items:
@@ -52,7 +52,7 @@ class GeoComparisonService:
 
         if ids:
             for id in ids:
-                item = self.info_repository._get_first_by_geonameid(id)
+                item = self.__info_repository._get_first_by_geonameid(id)
                 if item is not None:
                     geo_items.append(item)
 
@@ -72,9 +72,9 @@ class GeoComparisonService:
     def __compare_geo_items(self, geo_item_1: GeoInfo, geo_item_2: GeoInfo) -> Union[Dict[str, Any], None]:
         if geo_item_1 is not None and geo_item_2 is not None:
             northern_item = self.__get_geo_item_with_max_latitude(geo_item_1, geo_item_2)
-            comparison_dict = {'Northern geo': northern_item.name,
-                               'Northern latitude': northern_item.latitude,
-                               'Timezones_difference': self.__get_timezones_difference(geo_item_1, geo_item_2)}
+            comparison_dict = {'northern geo': northern_item.name,
+                               'northern latitude': northern_item.latitude,
+                               'timezones_difference': self.__get_timezones_difference(geo_item_1, geo_item_2)}
             return comparison_dict
 
         return None
@@ -101,4 +101,4 @@ class GeoComparisonService:
         if timezone_name == "":
             return None
         else:
-            return self.timezones_repository.get_timezone_offset(timezone_name)
+            return self.__timezones_repository.get_timezone_offset(timezone_name)

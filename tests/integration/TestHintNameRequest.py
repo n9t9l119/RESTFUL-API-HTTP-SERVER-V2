@@ -1,14 +1,13 @@
 from typing import List
-
 import pytest
 import requests
 import json
 
+from config import request_keys
+
 
 class TestHintName:
-    key = 'Hint'
-
-    @pytest.mark.parametrize('key', [(key)])
+    @pytest.mark.parametrize('key', [(*request_keys['hintname'])])
     def test_hintname_200(self, key):
         response = requests.post('http://127.0.0.1:8000/api/hintname', json={
             key: 'Yasnaya'
@@ -21,7 +20,7 @@ class TestHintName:
 
         assert isinstance(json_response, List)
 
-    @pytest.mark.parametrize('key', [(key)])
+    @pytest.mark.parametrize('key', [(*request_keys['hintname'])])
     def test_getcomparison_check_match_with_pattern(self, key):
         response = requests.post('http://127.0.0.1:8000/api/hintname', json={
             key: 'Yasnaya!'
@@ -31,7 +30,7 @@ class TestHintName:
         assert response.status_code == 400
         assert response.text == f'Incorrect request!\n{key} include incorrect symbols!'
 
-    @pytest.mark.parametrize('key', [(key)])
+    @pytest.mark.parametrize('key', [(*request_keys['hintname'])])
     def test_getpage_keys_not_found(self, key):
         response = requests.post('http://127.0.0.1:8000/api/hintname', json={
             'Hnt': "Знаменка"
