@@ -9,7 +9,7 @@ from db.model import GeoInfo, NameId
 from db.serializers.ModelSerializer import ModelSerializer
 
 
-class DataBaseCreator:
+class DatabaseCreator:
     def __init__(self, ru_txt_path: str, timezones_txt_path: str):
         self.__ru_txt_path = ru_txt_path
         self.__timezones_txt_path = timezones_txt_path
