@@ -6,6 +6,10 @@ from response_templates.TimezonesDataTemplate import TimezonesDataTemplate
 
 
 class ModelSerializer:
+    def __init__(self):
+        self.__timezones_data_template = TimezonesDataTemplate()
+        self.__geo_info_data_template = GeoInfoDataTemplate()
+
     @staticmethod
     def serialize_geo_info(geo_item: GeoInfo, alternames=None) -> Dict[str, Any]:
         if geo_item is None:
@@ -30,10 +34,9 @@ class ModelSerializer:
                 'modification_date': geo_item.modification_date
                 }
 
-    @staticmethod
-    def deserialize_geo_info(geo_info) -> Union[GeoInfo, None]:
+    def deserialize_geo_info(self, geo_info) -> Union[GeoInfo, None]:
         if isinstance(geo_info, dict):
-            GeoInfoDataTemplate().check_template_matches(list(geo_info.values()))
+            self.__geo_info_data_template.check_template_matches(list(geo_info.values()))
             return GeoInfo(
                 geonameid=geo_info.get('geonameid'),
                 name=geo_info.get('name'),
@@ -56,16 +59,13 @@ class ModelSerializer:
                 modification_date=geo_info.get('modification_date'))
         return None
 
-    @staticmethod
-    def deserialize_name_id(name_id) -> Union[NameId, None]:
+    def deserialize_name_id(self, name_id) -> Union[NameId, None]:
         if isinstance(name_id, dict):
-            TimezonesDataTemplate().check_template_matches(list(name_id.values()))
             return NameId(name=name_id.get('name'), idlnk=name_id.get('idlnk'))
         return None
 
-    @staticmethod
-    def deserialize_timezones(timezones) -> Union[Timezones, None]:
+    def deserialize_timezones(self, timezones) -> Union[Timezones, None]:
         if isinstance(timezones, dict):
-            TimezonesDataTemplate().check_template_matches(list(timezones.values()))
+            self.__timezones_data_template.check_template_matches(list(timezones.values()))
             return Timezones(time_zone=timezones.get('time_zone'), offset=timezones.get('offset'))
         return None
