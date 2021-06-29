@@ -1,6 +1,8 @@
-from typing import Dict, Any
+from typing import Dict, Any, Union
 
 from db.model import GeoInfo, NameId, Timezones
+from response_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
+from response_templates.TimezonesDataTemplate import TimezonesDataTemplate
 
 
 class ModelSerializer:
@@ -29,35 +31,41 @@ class ModelSerializer:
                 }
 
     @staticmethod
-    def deserialize_geo_info(geo_info) -> GeoInfo:
-        return GeoInfo(
-            geonameid=geo_info.get('geonameid'),
-            name=geo_info.get('name'),
-            asciiname=geo_info.get('asciiname'),
-            alternatenames=geo_info.get('alternatenames'),
-            latitude=geo_info.get('latitude'),
-            longitude=geo_info.get('longitude'),
-            feature_class=geo_info.get('feature_class'),
-            feature_code=geo_info.get('feature_code'),
-            country_code=geo_info.get('country_code'),
-            cc2=geo_info.get('cc2'),
-            admin1_code=geo_info.get('admin1_code'),
-            admin2_code=geo_info.get('admin2_code'),
-            admin3_code=geo_info.get('admin3_code'),
-            admin4_code=geo_info.get('admin4_code'),
-            population=geo_info.get('population'),
-            elevation=geo_info.get('elevation'),
-            dem=geo_info.get('dem'),
-            timezone=geo_info.get('timezone'),
-            modification_date=geo_info.get('modification_date'))
+    def deserialize_geo_info(geo_info) -> Union[GeoInfo, None]:
+        if isinstance(geo_info, dict):
+            GeoInfoDataTemplate().check_template_matches(list(geo_info.values()))
+            return GeoInfo(
+                geonameid=geo_info.get('geonameid'),
+                name=geo_info.get('name'),
+                asciiname=geo_info.get('asciiname'),
+                alternatenames=geo_info.get('alternatenames'),
+                latitude=geo_info.get('latitude'),
+                longitude=geo_info.get('longitude'),
+                feature_class=geo_info.get('feature_class'),
+                feature_code=geo_info.get('feature_code'),
+                country_code=geo_info.get('country_code'),
+                cc2=geo_info.get('cc2'),
+                admin1_code=geo_info.get('admin1_code'),
+                admin2_code=geo_info.get('admin2_code'),
+                admin3_code=geo_info.get('admin3_code'),
+                admin4_code=geo_info.get('admin4_code'),
+                population=geo_info.get('population'),
+                elevation=geo_info.get('elevation'),
+                dem=geo_info.get('dem'),
+                timezone=geo_info.get('timezone'),
+                modification_date=geo_info.get('modification_date'))
+        return None
 
     @staticmethod
-    def deserialize_name_id(name_id) -> NameId:
-
-        return NameId(name=name_id.get('name'), idlnk=name_id.get('idlnk'))
+    def deserialize_name_id(name_id) -> Union[NameId, None]:
+        if isinstance(name_id, dict):
+            TimezonesDataTemplate().check_template_matches(list(name_id.values()))
+            return NameId(name=name_id.get('name'), idlnk=name_id.get('idlnk'))
+        return None
 
     @staticmethod
-    def deserialize_timezones(timezones) -> Timezones:
-        if timezones is None:
-            return timezones
-        return Timezones(time_zone=timezones.get('time_zone'), offset=timezones.get('offset'))
+    def deserialize_timezones(timezones) -> Union[Timezones, None]:
+        if isinstance(timezones, dict):
+            TimezonesDataTemplate().check_template_matches(list(timezones.values()))
+            return Timezones(time_zone=timezones.get('time_zone'), offset=timezones.get('offset'))
+        return None

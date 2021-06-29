@@ -1,7 +1,7 @@
 import re
 from typing import List
 
-from tests.response_templates.AbstractDataTemplate import AbstractDataTemplate
+from response_templates.AbstractDataTemplate import AbstractDataTemplate
 
 
 class GeoInfoDataTemplate(AbstractDataTemplate):
@@ -13,4 +13,6 @@ class GeoInfoDataTemplate(AbstractDataTemplate):
     def check_template_matches(self, cells: List):
         for count in range(len(GeoInfoDataTemplate.__data_patterns)):
             if GeoInfoDataTemplate.__data_patterns[count] != '':
-                assert re.match(GeoInfoDataTemplate.__data_patterns[count], str(cells[count]))
+                if not re.match(GeoInfoDataTemplate.__data_patterns[count], str(cells[count])):
+                    return False
+        return True

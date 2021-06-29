@@ -2,9 +2,9 @@ import pytest
 import requests
 import json
 
-from tests.response_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
+from response_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
 from config import request_keys
-from tests.response_templates.GeoComparesDataTemplate import GeoComparesDataTemplate
+from response_templates.GeoComparesDataTemplate import GeoComparesDataTemplate
 
 
 class TestGetComparison:
@@ -22,7 +22,7 @@ class TestGetComparison:
 
         for key in keys:
             response_values = dict(json_response[key]).values()
-            GeoInfoDataTemplate().check_template_matches(list(response_values))
+            assert GeoInfoDataTemplate().check_template_matches(list(response_values))==True
 
         assert GeoComparesDataTemplate().check_template_matches(dict(json_response)['compares'])
 

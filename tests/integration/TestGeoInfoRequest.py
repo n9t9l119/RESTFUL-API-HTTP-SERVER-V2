@@ -2,7 +2,7 @@ import json
 import pytest
 import requests
 
-from tests.response_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
+from response_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
 from config import request_keys
 
 
@@ -20,7 +20,7 @@ class TestGeoInfoRequest:
         json_response = json.loads(response.content.decode())
         response_values = dict(json_response).values()
 
-        GeoInfoDataTemplate().check_template_matches(list(response_values))
+        assert GeoInfoDataTemplate().check_template_matches(list(response_values)) == True
 
     @pytest.mark.parametrize('key', [(*request_keys['geoinfo'])])
     def test_getinfo_positive_int_expected(self, key):

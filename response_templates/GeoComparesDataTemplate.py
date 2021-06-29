@@ -1,7 +1,7 @@
 import re
 from typing import Dict
 
-from tests.response_templates.AbstractDataTemplate import AbstractDataTemplate
+from response_templates.AbstractDataTemplate import AbstractDataTemplate
 from config import response_keys
 
 
