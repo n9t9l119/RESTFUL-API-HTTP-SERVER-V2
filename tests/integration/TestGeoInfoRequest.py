@@ -2,7 +2,7 @@ import json
 import pytest
 import requests
 
-from tests.request_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
+from tests.response_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
 from config import request_keys
 
 

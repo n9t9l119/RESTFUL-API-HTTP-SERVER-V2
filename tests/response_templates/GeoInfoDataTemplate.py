@@ -1,7 +1,7 @@
 import re
 from typing import List
 
-from tests.request_templates.AbstractDataTemplate import AbstractDataTemplate
+from tests.response_templates.AbstractDataTemplate import AbstractDataTemplate
 
 
 class GeoInfoDataTemplate(AbstractDataTemplate):

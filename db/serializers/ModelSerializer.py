@@ -6,6 +6,8 @@ from db.model import GeoInfo, NameId, Timezones
 class ModelSerializer:
     @staticmethod
     def serialize_geo_info(geo_item: GeoInfo, alternames=None) -> Dict[str, Any]:
+        if geo_item is None:
+            return {}
         return {'geonameid': geo_item.geonameid,
                 'name': geo_item.name,
                 'asciiname': geo_item.asciiname,
@@ -51,8 +53,11 @@ class ModelSerializer:
 
     @staticmethod
     def deserialize_name_id(name_id) -> NameId:
+
         return NameId(name=name_id.get('name'), idlnk=name_id.get('idlnk'))
 
     @staticmethod
     def deserialize_timezones(timezones) -> Timezones:
+        if timezones is None:
+            return timezones
         return Timezones(time_zone=timezones.get('time_zone'), offset=timezones.get('offset'))

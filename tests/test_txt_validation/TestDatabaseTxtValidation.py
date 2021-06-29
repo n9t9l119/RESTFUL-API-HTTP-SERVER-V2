@@ -1,6 +1,6 @@
 from config import ru_txt_path, timezones_txt_path
-from tests.request_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
-from tests.request_templates.TimezonesDataTemplate import TimezonesDataTemplate
+from tests.response_templates.GeoInfoDataTemplate import GeoInfoDataTemplate
+from tests.response_templates.TimezonesDataTemplate import TimezonesDataTemplate
 
 
 class TestDatabaseTxtValidation:

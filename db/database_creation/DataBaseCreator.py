@@ -11,8 +11,14 @@ from db.serializers.ModelSerializer import ModelSerializer
 
 class DataBaseCreator:
     def __init__(self, ru_txt_path: str, timezones_txt_path: str):
-        self.__ru_txt = open(ru_txt_path, 'r', encoding='utf8')
-        self.__timezones_txt = open(timezones_txt_path, 'r', encoding='utf8')
+        self.__ru_txt_path = ru_txt_path
+        self.__timezones_txt_path = timezones_txt_path
+
+        if os.path.exists(ru_txt_path) and os.path.exists(timezones_txt_path):
+            self.__ru_txt = open(ru_txt_path, 'r', encoding='utf8')
+            self.__timezones_txt = open(timezones_txt_path, 'r', encoding='utf8')
+        else:
+            raise FileNotFoundError
 
         self.__ru_txt_convertor = RuTxtConvertor()
         self.__timezones_txt_convertor = TimezonesTxtConverter()
@@ -83,5 +89,6 @@ class DataBaseCreator:
         return table
 
     def __del__(self) -> None:
-        self.__ru_txt.close()
-        self.__timezones_txt.close()
+        if os.path.exists(self.__ru_txt_path) and os.path.exists(self.__timezones_txt_path):
+            self.__ru_txt.close()
+            self.__timezones_txt.close()
